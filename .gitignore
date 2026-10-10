@@ -1,0 +1,14 @@
+__pycache__/
+daze
+.venv/
+evidence/
+release-assets/
+*.EXE
+*.exe
+*.COM
+*.com
+*.DLL
+*.dll
+*.LIB
+*.lib
+*.zip
