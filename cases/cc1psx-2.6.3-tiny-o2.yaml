@@ -1,0 +1,34 @@
+---
+id: cc1psx-2.6.3-tiny-o2
+
+fixture: cc1psx-2.6.3
+
+labels:
+  - cc1psx
+  - cc1psx-2.6.3
+  - compiler
+  - o2
+
+# stderr stays null: Unicorn prints the tolerated 43h diagnostic line,
+# KVM stays silent — same structural divergence as the sibling -O2
+# cases (no KVM failure on 2.6.3, unlike 2.6.0's history).
+ignore_stderr: true
+
+command:
+  program: CC1PSX.EXE
+  args:
+    - -O2
+    - -o
+    - BAZ.S
+    - simple.c
+
+inputs:
+  - source: sources/tiny/simple.c
+    dest: simple.c
+
+outputs:
+  - path: BAZ.S
+
+benchmark:
+  size: tiny
+  iterations: 5

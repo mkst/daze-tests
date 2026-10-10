@@ -1,0 +1,27 @@
+---
+id: msc-5.1-tiny
+
+fixture: msc-5.1
+
+labels:
+  - msc
+  - msc-5.1
+  - compiler
+
+command:
+  program: CL.EXE
+  args:
+    - /c
+    - simple.c
+
+inputs:
+  # Trivial TU (identical to daze's simple.c input). Stage byte-exact.
+  - source: sources/tiny/simple.c
+    dest: simple.c
+
+outputs:
+  - path: simple.OBJ
+
+benchmark:
+  size: tiny
+  iterations: 5

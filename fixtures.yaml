@@ -1,0 +1,131 @@
+fixtures:
+  aspsx-1.05:
+    url: https://github.com/mkst/daze-tests/releases/download/init/aspsx-1.05.zip
+    sha256: 40f44d52e0e0b9a2299649ae8f7fd6f0b3339bd804829a9a1932af4c0db77f0b
+    format: zip
+    provides:
+    - ASPSX.EXE
+    content_sha256: ec2af522e6af848861c4a705433baf551ad139048768a7353c435ab1f5f12cbf
+  aspsx-1.07:
+    url: https://github.com/mkst/daze-tests/releases/download/init/aspsx-1.07.zip
+    sha256: bb544180d1e8c8a67bb036c191a0e168f4630d19f8d20d10a58b7478ea97216e
+    format: zip
+    provides:
+    - ASPSX.EXE
+    content_sha256: b54ce25631e581904027b0c03ef7f29e3d725fbf0ebcdae012fdc0449f017d3d
+  aspsx-2.05:
+    url: https://github.com/mkst/daze-tests/releases/download/init/aspsx-2.05.zip
+    sha256: 662daf51662d67512cf7f1ca0437f699846a2d8037aab3f3065c38d067312f2b
+    format: zip
+    provides:
+    - ASPSX.EXE
+    content_sha256: 7f22aee45737e5adfb459ddb1b024b74f30b0cae95de01a20523d507ae32c6f5
+  aspsx-2.08:
+    url: https://github.com/mkst/daze-tests/releases/download/init/aspsx-2.08.zip
+    sha256: 0932c5fc7ff45a8d34aba86f21b62c190a131bcc6ba102803c0213b8b47d0bae
+    format: zip
+    provides:
+    - ASPSX.EXE
+    content_sha256: 8c3651e9edad29be9eaf0177fb47a2a453520f424c0d564b46288347638639a9
+  aspsx-2.21:
+    url: https://github.com/mkst/daze-tests/releases/download/init/aspsx-2.21.zip
+    sha256: be38ca696ed6994e07b99905c36e6c5a8a168cdf94bd55c46405556c45c72f33
+    format: zip
+    provides:
+    - ASPSX.EXE
+    content_sha256: b1d3a3fb252ad6dc7535fcf925e51615d3cec63fe610fea9b7a9e0c7ea8eb7ce
+  aspsx-2.30:
+    url: https://github.com/mkst/daze-tests/releases/download/init/aspsx-2.30.zip
+    sha256: dc0ac77c6c82da776f8b0be887e36e6ae08f8d6c866d75153f775f50cb6b0465
+    format: zip
+    provides:
+    - ASPSX.EXE
+    content_sha256: 39b89ecd9ddf6c9a97f9f7a0ec44d7ff39648d5a8e3ae5baf3bd628c78c63f42
+  aspsx-2.34:
+    url: https://github.com/mkst/daze-tests/releases/download/init/aspsx-2.34.zip
+    sha256: 3a467814dd7436e4b98b2c7a0ae6086043bb01557004249693360f89408c6571
+    format: zip
+    provides:
+    - ASPSX.EXE
+    content_sha256: 0f133c812a816fd6eb022f3f97e2612ca2fabaff03d54cc7c817dae9d330aacf
+  bcc-2.0:
+    url: https://github.com/mkst/daze-tests/releases/download/init/bcc-2.0.zip
+    sha256: 6f35828be243d609b775a4e645f4eb79fb3b2fc3bf55d97e5bf3f4d1e6d2a8d8
+    format: zip
+    provides:
+    - bcc.exe
+    content_sha256: 26d5d430aa92f4960036cd8cf10077546f2b347f4ba2e1df647b6662786e7f76
+  bcc-3.1:
+    url: https://github.com/mkst/daze-tests/releases/download/init/bcc-3.1.zip
+    sha256: 226e998bdb26298edce3436811dde6939d0f3f4264f4963b9a7b98831ea17d41
+    format: zip
+    provides:
+    - bcc.exe
+    - dpmiload.exe
+    - dpmimem.dll
+    content_sha256: 7942cd8ee97e0d2a4e430523c849bbbdf0c19920946d8ec3ce59c1ba0d1d9ab2
+  cygnus-2.7-96Q3:
+    url: https://github.com/mkst/daze-tests/releases/download/init/cygnus-2.7-96Q3.zip
+    sha256: 5c0c35c055589c5e15c762f90c01f731025aca46aa69f8ce75c51cc1fb04f2a2
+    format: zip
+    provides:
+    - CPP.EXE
+    - CC1.EXE
+    - AS.EXE
+    - GO32.EXE
+    - AR.EXE
+    - NM.EXE
+    content_sha256: acc2ae5a810dddfbfe09ace9865a5fec89e22bd5c16a1813f6279638778dbc09
+  cc1psx-2.6.0:
+    url: https://github.com/mkst/daze-tests/releases/download/init/cc1psx-2.6.0.zip
+    sha256: fa7163450b5dff10d8b9e9993cc0e7a568d5d6d8d13b6378310b9ec2928bc6d5
+    format: zip
+    provides:
+    - CC1PSX.EXE
+    content_sha256: 2c6d283cd0ceacd14b8677d111b828c6c96e28278825fcfad6fa85532f199e67
+  msc-5.1:
+    url: https://github.com/mkst/daze-tests/releases/download/init/msc-5.1.zip
+    sha256: 894e410d3d84fa4ed2c25d8bec550366f4f6117d5f6c21042e028eeee0ef1407
+    format: zip
+    provides:
+    - CL.EXE
+    - C1.EXE
+    - C2.EXE
+    - C3.EXE
+    - MASM.EXE
+    - LINK.EXE
+    content_sha256: deedc78a64f6b53ce22072329d93071c7e92abd5bfad8d27812b50e609ae2006
+  cc1psx-2.6.3:
+    url: https://github.com/mkst/daze-tests/releases/download/init/cc1psx-2.6.3.zip
+    sha256: 465fe10cba9dc5327935ef63488cd8d17c78882ee7f7f39da2e6404ff0cbbf9e
+    format: zip
+    provides:
+    - CC1PSX.EXE
+    content_sha256: 9a1c2f00d47e56aa9a25cd6fa744e2dd0a77e8750b23331faec06afa7d6b2d3d
+  cc1psx-2.7.2:
+    url: https://github.com/mkst/daze-tests/releases/download/init/cc1psx-2.7.2.zip
+    sha256: 5dcac1f13fdf8c82fb3b9e19619de79bd66e15fd91e4ec348488ec4f284b573e
+    format: zip
+    provides:
+    - CC1PSX.EXE
+    content_sha256: 4e9979040e05945f26ecba9a63eca37277ec1fbf41ff6595e5eaaa41e03be6a5
+  ccpsx-psyq3.3:
+    url: https://github.com/mkst/daze-tests/releases/download/init/ccpsx-psyq3.3.zip
+    sha256: 9422b4a02d87a66819288d19b642f0a9b4e84f1491863a5fda5480a36a68d376
+    format: zip
+    provides:
+    - CCPSX.EXE
+    - CPPPSX.EXE
+    - CC1PSX.EXE
+    - ASPSX.EXE
+    - psyq.ini
+    - PSYLINK.EXE
+    content_sha256: cd07251caa3ba6ed9872dc5229e04b1fe17f910d9be3d60a621ff0a0b5a02f3f
+  asmpsx-psyq3.3:
+    url: https://github.com/mkst/daze-tests/releases/download/init/asmpsx-psyq3.3.zip
+    sha256: aa522ae0a139f987f690994d37ec941288a74bc27325a7d5e70cf907ce35a548
+    format: zip
+    provides:
+    - ASMPSX.EXE
+    - PSYLINK.EXE
+    content_sha256: acf3e9a45a87b914e8e34d712f236623df29bb224b0eb3be4c5ca1e7fc005375

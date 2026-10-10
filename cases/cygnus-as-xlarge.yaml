@@ -1,0 +1,28 @@
+---
+id: cygnus-as-xlarge
+
+fixture: cygnus-2.7-96Q3
+
+labels:
+  - cygnus
+  - cygnus-2.7-96Q3
+  - as
+
+command:
+  program: AS.EXE
+  args:
+    - -o
+    - foo.o
+    - foo.s
+
+inputs:
+  # Seeded from the verified cygnus-cc1-xlarge output, frozen.
+  - source: sources/xlarge/xlarge.s
+    dest: foo.s
+
+outputs:
+  - path: foo.o
+
+benchmark:
+  size: xlarge
+  iterations: 3

@@ -1,0 +1,30 @@
+---
+id: bcc-2.0-small
+
+fixture: bcc-2.0
+
+labels:
+  - bcc
+  - bcc-2.0
+  - compiler
+
+command:
+  program: bcc.exe
+  args:
+    - -c
+    - -osieve.obj
+    - sieve.c
+
+inputs:
+  # K&R sieve (Byte, Jan 1983). Tracked with CRLF; stage byte-exact,
+  # no conversion — matches daze's raw staging.
+  - source: sources/small/sieve.c
+    dest: sieve.c
+
+outputs:
+  - path: sieve.obj
+
+benchmark:
+  size: small
+  iterations: 5
+  kvikdos: true

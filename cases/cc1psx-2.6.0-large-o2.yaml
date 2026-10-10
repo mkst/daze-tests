@@ -1,0 +1,35 @@
+---
+id: cc1psx-2.6.0-large-o2
+
+fixture: cc1psx-2.6.0
+
+labels:
+  - cc1psx
+  - cc1psx-2.6.0
+  - compiler
+  - o2
+
+# -O2 stderr is meaningless (Unicorn's tolerated 43h diagnostic line vs
+# KVM silence); the committed golden already records stderr null, so
+# declare it here too — otherwise the next re-bless would re-arm an
+# exact stderr check that can never pass on both backends.
+ignore_stderr: true
+
+command:
+  program: CC1PSX.EXE
+  args:
+    - -O2
+    - -o
+    - BAZ.S
+    - foo.i
+
+inputs:
+  - source: sources/large/large.i
+    dest: foo.i
+
+outputs:
+  - path: BAZ.S
+
+benchmark:
+  size: large
+  iterations: 2

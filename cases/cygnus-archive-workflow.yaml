@@ -1,0 +1,163 @@
+id: cygnus-archive-workflow
+fixture: cygnus-2.7-96Q3
+labels:
+- migration
+- cygnus-2.7-96Q3
+commands:
+- program: AS.EXE
+  args:
+  - -o
+  - FIRST.O
+  - first.s
+  expect:
+    exit_code: 0
+    stdout_equals: ''
+    files:
+    - path: FIRST.O
+      sha256: 0b7bf8016262c89d19065a2b0bc18699765f96b6bd3a7b15c641dda7d758621d
+      mask:
+      - - 4
+        - 8
+- program: AS.EXE
+  args:
+  - -o
+  - SECOND.O
+  - second.s
+  expect:
+    exit_code: 0
+    stdout_equals: ''
+    files:
+    - path: SECOND.O
+      sha256: c16f263dce64d4f6b2d526b452ca00628ca68acc561cd7cbeb4eaf18484a05ea
+      mask:
+      - - 4
+        - 8
+- program: AS.EXE
+  args:
+  - -o
+  - REPLACE.O
+  - replacement.s
+  expect:
+    exit_code: 0
+    stdout_equals: ''
+    files:
+    - path: REPLACE.O
+      sha256: fddc590263b9eda3a28b187d95694068f2bbeca2345bcc3922fc46a4bd207ef3
+      mask:
+      - - 4
+        - 8
+- program: AR.EXE
+  args:
+  - rcs
+  - SIMPLE.A
+  - FIRST.O
+  - SECOND.O
+  expect:
+    exit_code: 0
+    stdout_equals: ''
+    files:
+    - path: SIMPLE.A
+- program: NM.EXE
+  args:
+  - -s
+  - SIMPLE.A
+  expect:
+    stdout_contains:
+    - _first in FIRST.O
+    - _second in SECOND.O
+- program: AR.EXE
+  args:
+  - t
+  - SIMPLE.A
+  expect:
+    stdout_contains:
+    - FIRST.O
+    - SECOND.O
+- program: AR.EXE
+  args:
+  - x
+  - SIMPLE.A
+  expect:
+    exit_code: 0
+    stdout_equals: ''
+    files:
+    - path: FIRST.O
+      sha256: 0b7bf8016262c89d19065a2b0bc18699765f96b6bd3a7b15c641dda7d758621d
+      mask:
+      - - 4
+        - 8
+    - path: SECOND.O
+      sha256: c16f263dce64d4f6b2d526b452ca00628ca68acc561cd7cbeb4eaf18484a05ea
+      mask:
+      - - 4
+        - 8
+  remove:
+  - FIRST.O
+  - SECOND.O
+- program: AR.EXE
+  args:
+  - r
+  - SIMPLE.A
+  - FIRST.O
+  expect:
+    exit_code: 0
+    stdout_equals: ''
+  copy:
+    REPLACE.O: FIRST.O
+- program: AR.EXE
+  args:
+  - x
+  - SIMPLE.A
+  expect:
+    exit_code: 0
+    stdout_equals: ''
+    files:
+    - path: FIRST.O
+      sha256: fddc590263b9eda3a28b187d95694068f2bbeca2345bcc3922fc46a4bd207ef3
+      mask:
+      - - 4
+        - 8
+    - path: SECOND.O
+      sha256: c16f263dce64d4f6b2d526b452ca00628ca68acc561cd7cbeb4eaf18484a05ea
+      mask:
+      - - 4
+        - 8
+  remove:
+  - FIRST.O
+  - SECOND.O
+- program: AR.EXE
+  args:
+  - d
+  - SIMPLE.A
+  - SECOND.O
+  expect:
+    exit_code: 0
+    stdout_equals: ''
+- program: AR.EXE
+  args:
+  - x
+  - SIMPLE.A
+  expect:
+    exit_code: 0
+    stdout_equals: ''
+    files:
+    - &id001
+      path: FIRST.O
+      sha256: fddc590263b9eda3a28b187d95694068f2bbeca2345bcc3922fc46a4bd207ef3
+      mask:
+      - - 4
+        - 8
+    - path: SECOND.O
+      absent: true
+  remove:
+  - FIRST.O
+  - SECOND.O
+inputs:
+- source: sources/migration/first.s
+  dest: first.s
+- source: sources/migration/second.s
+  dest: second.s
+- source: sources/migration/replacement.s
+  dest: replacement.s
+outputs:
+- *id001

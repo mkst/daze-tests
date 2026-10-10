@@ -1,0 +1,6 @@
+exit_code: 0
+stdout: stdout
+stderr: stderr
+files:
+- path: simple.OBJ
+  sha256: 7154e06ca7e9aa39bb428a3c3daa7586a3a9a8af1eac9517b91cc4dd78840653

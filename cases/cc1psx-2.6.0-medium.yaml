@@ -1,0 +1,29 @@
+---
+id: cc1psx-2.6.0-medium
+
+fixture: cc1psx-2.6.0
+
+labels:
+  - cc1psx
+  - cc1psx-2.6.0
+  - compiler
+
+command:
+  program: CC1PSX.EXE
+  args:
+    - -o
+    - BAZ.S
+    - foo.i
+
+inputs:
+  # Preprocessed seed, frozen from the verified cygnus-cpp-medium output
+  # (same file cygnus-cc1-medium consumes).
+  - source: sources/medium/medium.i
+    dest: foo.i
+
+outputs:
+  - path: BAZ.S
+
+benchmark:
+  size: medium
+  iterations: 5

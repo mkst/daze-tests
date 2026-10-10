@@ -1,0 +1,32 @@
+---
+id: cc1psx-2.7.2-small
+
+fixture: cc1psx-2.7.2
+
+labels:
+  - cc1psx
+  - cc1psx-2.7.2
+  - compiler
+
+command:
+  program: CC1PSX.EXE
+  args:
+    - -o
+    - BAZ.S
+    - foo.i
+
+inputs:
+  # Preprocessed sieve, frozen from the verified cygnus-cpp-small output
+  # (the same seed file cygnus-cc1-small consumes). Raw .c with comments
+  # is rejected by CC1PSX (exit 33 on 2.6.0, verified identical under
+  # DOSEMU2), so .i seeds are the input format here, not a workaround.
+  # See ORACLE.md.
+  - source: sources/small/sieve.i
+    dest: foo.i
+
+outputs:
+  - path: BAZ.S
+
+benchmark:
+  size: small
+  iterations: 5

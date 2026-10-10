@@ -1,0 +1,26 @@
+---
+id: cygnus-cpp-xlarge
+
+fixture: cygnus-2.7-96Q3
+
+labels:
+  - cygnus
+  - cygnus-2.7-96Q3
+  - cpp
+
+command:
+  program: CPP.EXE
+  args:
+    - xlarge.c
+    - foo.i
+
+inputs:
+  - source: sources/xlarge/xlarge.c
+    dest: xlarge.c
+
+outputs:
+  - path: foo.i
+
+benchmark:
+  size: xlarge
+  iterations: 3

@@ -1,0 +1,32 @@
+---
+id: bcc-3.1-large
+
+fixture: bcc-3.1
+
+labels:
+  - bcc
+  - bcc-3.1
+  - compiler
+
+# BCC 3.1 runs under its protected-mode DPMI loader; backend diagnostics
+# vary on stderr, so exit/stdout/object are the stable correctness checks.
+ignore_stderr: true
+
+command:
+  program: bcc.exe
+  args:
+    - -c
+    - -olarge.o
+    - large.c
+
+inputs:
+  # Generated C89 workload with 80 small varied functions.
+  - source: sources/large/large.c
+    dest: large.c
+
+outputs:
+  - path: large.o
+
+benchmark:
+  size: large
+  iterations: 5

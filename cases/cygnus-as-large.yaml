@@ -1,0 +1,35 @@
+---
+id: cygnus-as-large
+
+fixture: cygnus-2.7-96Q3
+
+labels:
+  - cygnus
+  - cygnus-2.7-96Q3
+  - as
+
+command:
+  program: AS.EXE
+  args:
+    - -o
+    - foo.o
+    - foo.s
+
+inputs:
+  # Seeded from the verified cygnus-cc1-large output, frozen.
+  - source: sources/large/large.s
+    dest: foo.s
+
+outputs:
+  # COFF bytes 4-7 are an object-finalize timestamp sampled from the DOS
+  # clock, which advances with execution: fast runs agree across backends,
+  # but this input takes ~6s under Unicorn vs ~0.1s under KVM, so the two
+  # backends stamp differently (verified: stable within a backend, masked
+  # hashes agree, matching daze's own masked recipe). Mask those bytes;
+  # everything else compares exactly.
+  - path: foo.o
+    mask: [[4, 8]]
+
+benchmark:
+  size: medium
+  iterations: 5

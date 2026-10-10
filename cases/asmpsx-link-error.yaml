@@ -1,0 +1,51 @@
+id: asmpsx-link-error
+fixture: asmpsx-psyq3.3
+labels:
+- migration
+- asmpsx-psyq3.3
+commands:
+- program: ASMPSX.EXE
+  args:
+  - /l
+  - SIMPLE.ASM,SIMPLE.OBJ
+  expect:
+    stdout_contains:
+    - Psy-Q
+    files:
+    - path: SIMPLE.OBJ
+      size: 53
+      sha256: 87c80379774698fdc0117f79b8259edd1fa523a52498d0ff6f12b378b1cd0136
+- program: PSYLINK.EXE
+  args:
+  - /p
+  - /o
+  - $80010000
+  - SIMPLE.OBJ,LINKED.BIN
+  expect:
+    stdout_contains:
+    - PSYLINK
+    files:
+    - &id001
+      path: LINKED.BIN
+      size: 12
+      sha256: 11c8b2a18827fe276b948c5d9e6b9281fedbd5ff85faa0b771d4d1a0f7909808
+- program: ASMPSX.EXE
+  args:
+  - /l
+  - BAD.ASM,BAD.OBJ
+  expect:
+    exit_code: 3
+    stdout_contains:
+    - Op-code not recognised
+    files:
+    - path: BAD.OBJ
+      absent: true
+inputs:
+- source: sources/migration/answer.asm
+  dest: SIMPLE.ASM
+  crlf: true
+- source: sources/migration/bad.asm
+  dest: BAD.ASM
+  crlf: true
+outputs:
+- *id001

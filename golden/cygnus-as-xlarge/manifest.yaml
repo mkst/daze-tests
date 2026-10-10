@@ -1,0 +1,7 @@
+exit_code: 0
+stdout: stdout
+stderr: stderr
+files:
+- path: foo.o
+  sha256: 092daa63d6b456049053d2db7beecb4b23ab6b662feb2f7798f081d438fc521d
+  mask: [[4, 8]]

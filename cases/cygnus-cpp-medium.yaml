@@ -1,0 +1,28 @@
+---
+id: cygnus-cpp-medium
+
+fixture: cygnus-2.7-96Q3
+
+labels:
+  - cygnus
+  - cygnus-2.7-96Q3
+  - cpp
+
+command:
+  program: CPP.EXE
+  args:
+    - medium.c
+    - foo.i
+
+inputs:
+  # Hand-written C89 workload (~200 lines, no library calls). Stage
+  # byte-exact, no conversion.
+  - source: sources/medium/medium.c
+    dest: medium.c
+
+outputs:
+  - path: foo.i
+
+benchmark:
+  size: medium
+  iterations: 10

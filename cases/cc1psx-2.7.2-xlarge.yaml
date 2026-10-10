@@ -1,0 +1,36 @@
+---
+id: cc1psx-2.7.2-xlarge
+
+fixture: cc1psx-2.7.2
+
+labels:
+  - cc1psx
+  - cc1psx-2.7.2
+  - compiler
+
+# Known limit on Unicorn only: it needs ~58-60s for this input,
+# straddling the hard 60s bound even unloaded (2 of 3 serial runs time
+# out), while KVM completes in under 2s. SKIP applies to the listed
+# backends only; do not shrink the input to force it green.
+# See KNOWN-LIMITS.md.
+known_limit: [unicorn]
+
+command:
+  program: CC1PSX.EXE
+  args:
+    - -o
+    - BAZ.S
+    - foo.i
+
+inputs:
+  # Preprocessed seed, frozen from the verified cygnus-cpp-xlarge output
+  # (same file cygnus-cc1-xlarge consumes).
+  - source: sources/xlarge/xlarge.i
+    dest: foo.i
+
+outputs:
+  - path: BAZ.S
+
+benchmark:
+  size: xlarge
+  iterations: 3

@@ -1,0 +1,33 @@
+---
+id: msc-5.1-masm-tiny
+
+fixture: msc-5.1
+
+labels:
+  - msc
+  - msc-5.1
+  - compiler
+  - masm
+  - assembler
+
+commands:
+  - program: MASM.EXE
+    args:
+      - hello.asm,,,,
+  - program: LINK.EXE
+    args:
+      - hello.obj,,,,
+  - program: HELLO.EXE
+
+inputs:
+  - source: sources/masm/tiny/hello.asm
+    dest: hello.asm
+
+outputs:
+  - path: hello.obj
+  - path: hello.exe
+
+benchmark:
+  size: tiny
+  iterations: 5
+  kvikdos: true

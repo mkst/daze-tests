@@ -1,0 +1,8 @@
+exit_code: 0
+stdout: stdout
+stderr: stderr
+files:
+- path: records.obj
+  sha256: dd011311dc8c94c04a5d17c6efcda8861f49e34ce50ba732d37abff55c12cc1f
+- path: records.exe
+  sha256: f5569a0967d5fef7ccb2efe79aacf5a2ac2db79bf5489a8aee9ac4b4a5dd1449

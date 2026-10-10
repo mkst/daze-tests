@@ -1,0 +1,9 @@
+exit_code: 0
+stdout: stdout
+stderr: stderr
+files:
+- path: MEDIUM.OBJ
+  sha256: 409c49cdcdb684f70481bb80b839e43bda2b980a2df91ce4c432fb3beff2807c
+  mask:
+  - - 109
+    - 110

@@ -1,0 +1,29 @@
+---
+id: cygnus-cc1-large
+
+fixture: cygnus-2.7-96Q3
+
+labels:
+  - cygnus
+  - cygnus-2.7-96Q3
+  - cc1
+
+
+command:
+  program: CC1.EXE
+  args:
+    - -o
+    - foo.s
+    - foo.i
+
+inputs:
+  # Seeded from the verified cygnus-cpp-large output, frozen.
+  - source: sources/large/large.i
+    dest: foo.i
+
+outputs:
+  - path: foo.s
+
+benchmark:
+  size: large
+  iterations: 2

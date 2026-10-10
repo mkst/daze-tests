@@ -1,0 +1,6 @@
+exit_code: 0
+stdout: stdout
+stderr: stderr
+files:
+- path: FOO.O
+  sha256: 4aab8d16e041c7f10a8189843d36e46351c83ccd10b673c46bed3b2d624a7b20

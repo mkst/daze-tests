@@ -1,0 +1,35 @@
+---
+id: bcc-3.1-tiny
+
+fixture: bcc-3.1
+
+labels:
+  - bcc
+  - bcc-3.1
+  - compiler
+
+# BCC 3.1 runs under its DPMI loader, whose backend diagnostics go to
+# stderr: Unicorn prints per-exception register/stack dumps with
+# run-varying fields (and KVM stays silent), so exact stderr comparison
+# can never pass. Exit/stdout/objects still gate; see ORACLE.md.
+ignore_stderr: true
+
+command:
+  program: bcc.exe
+  args:
+    - -c
+    - -oout.o
+    - simple.c
+
+inputs:
+  # Trivial TU (identical to daze's simple.c test input). Stage
+  # byte-exact, no conversion.
+  - source: sources/tiny/simple.c
+    dest: simple.c
+
+outputs:
+  - path: out.o
+
+benchmark:
+  size: tiny
+  iterations: 5

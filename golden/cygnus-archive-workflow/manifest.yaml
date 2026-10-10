@@ -1,0 +1,9 @@
+exit_code: 0
+stdout: null
+stderr: null
+files:
+- path: FIRST.O
+  sha256: fddc590263b9eda3a28b187d95694068f2bbeca2345bcc3922fc46a4bd207ef3
+  mask:
+  - - 4
+    - 8

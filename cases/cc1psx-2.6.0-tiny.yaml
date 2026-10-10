@@ -1,0 +1,32 @@
+---
+id: cc1psx-2.6.0-tiny
+
+fixture: cc1psx-2.6.0
+
+labels:
+  - cc1psx
+  - cc1psx-2.6.0
+  - compiler
+
+command:
+  program: CC1PSX.EXE
+  args:
+    - -o
+    - BAZ.S
+    - simple.c
+
+inputs:
+  # Trivial TU (identical to daze's simple.c input). CC1PSX 2.6.0 is a
+  # compiler-proper with no integrated preprocessor — it accepts this
+  # only because the file has no comments or directives. Larger inputs
+  # go through frozen preprocessed (.i) seeds instead; see the small
+  # case and its ORACLE.md.
+  - source: sources/tiny/simple.c
+    dest: simple.c
+
+outputs:
+  - path: BAZ.S
+
+benchmark:
+  size: tiny
+  iterations: 5

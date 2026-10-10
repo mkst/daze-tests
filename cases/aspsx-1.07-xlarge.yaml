@@ -1,0 +1,30 @@
+---
+id: aspsx-1.07-xlarge
+
+fixture: aspsx-1.07
+
+labels:
+  - aspsx
+  - aspsx-1.07
+  - assembler
+
+command:
+  program: ASPSX.EXE
+  args:
+    - -o
+    - FOO.O
+    - MIPS.S
+
+inputs:
+  # Sustained-execution stress workload: trivial program repeated to
+  # 34560 lines. Materialize with DOS line endings.
+  - source: sources/xlarge/mips.s
+    dest: MIPS.S
+    crlf: true
+
+outputs:
+  - path: FOO.O
+
+benchmark:
+  size: xlarge
+  iterations: 3

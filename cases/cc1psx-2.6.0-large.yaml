@@ -1,0 +1,30 @@
+---
+id: cc1psx-2.6.0-large
+
+fixture: cc1psx-2.6.0
+
+labels:
+  - cc1psx
+  - cc1psx-2.6.0
+  - compiler
+
+
+command:
+  program: CC1PSX.EXE
+  args:
+    - -o
+    - BAZ.S
+    - foo.i
+
+inputs:
+  # Preprocessed seed, frozen from the verified cygnus-cpp-large output
+  # (same file cygnus-cc1-large consumes).
+  - source: sources/large/large.i
+    dest: foo.i
+
+outputs:
+  - path: BAZ.S
+
+benchmark:
+  size: large
+  iterations: 2

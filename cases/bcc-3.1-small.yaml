@@ -1,0 +1,33 @@
+---
+id: bcc-3.1-small
+
+fixture: bcc-3.1
+
+labels:
+  - bcc
+  - bcc-3.1
+  - compiler
+
+# Same DPMI-diagnostics rationale as bcc-3.1-tiny: stderr is recorded
+# as null (never compared). See ORACLE.md.
+ignore_stderr: true
+
+command:
+  program: bcc.exe
+  args:
+    - -c
+    - -osieve.o
+    - sieve.C
+
+inputs:
+  # Same bytes as daze's sieve.C test input (CRLF). Keep the exact
+  # filename case daze uses — the OBJ embeds source metadata.
+  - source: sources/small/sieve.c
+    dest: sieve.C
+
+outputs:
+  - path: sieve.o
+
+benchmark:
+  size: small
+  iterations: 5

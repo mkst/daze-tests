@@ -1,0 +1,30 @@
+---
+id: bcc-2.0-tiny
+
+fixture: bcc-2.0
+
+labels:
+  - bcc
+  - bcc-2.0
+  - compiler
+
+command:
+  program: bcc.exe
+  args:
+    - -c
+    - -oout.o
+    - simple.c
+
+inputs:
+  # Trivial TU (identical to daze's simple.c test input). BCC tolerates
+  # LF, and daze stages it raw — keep byte-exact staging, no conversion.
+  - source: sources/tiny/simple.c
+    dest: simple.c
+
+outputs:
+  - path: out.o
+
+benchmark:
+  size: tiny
+  iterations: 10
+  kvikdos: true

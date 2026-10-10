@@ -1,0 +1,27 @@
+---
+id: msc-5.1-small
+
+fixture: msc-5.1
+
+labels:
+  - msc
+  - msc-5.1
+  - compiler
+
+command:
+  program: CL.EXE
+  args:
+    - /c
+    - sieve.c
+
+inputs:
+  # K&R sieve, byte-exact staging like daze.
+  - source: sources/small/sieve.c
+    dest: sieve.c
+
+outputs:
+  - path: sieve.OBJ
+
+benchmark:
+  size: small
+  iterations: 5

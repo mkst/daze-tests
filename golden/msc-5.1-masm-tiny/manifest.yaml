@@ -1,0 +1,8 @@
+exit_code: 0
+stdout: stdout
+stderr: stderr
+files:
+- path: hello.obj
+  sha256: 912f885cd0fbba5eb467f59da4c1750b20ff860f9bafa67001805a50830b4d1f
+- path: hello.exe
+  sha256: 2e57feaf5a1fb3dc65466168bad6a3cada2102aa106da8a1166b9289eb9c010a

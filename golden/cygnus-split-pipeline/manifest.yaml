@@ -1,0 +1,10 @@
+exit_code: 0
+stdout: null
+stderr: null
+files:
+- path: output.o
+  size: 393
+  sha256: eae8a2acc1d641a8d6edabd79b6e97d12db18fcc5c5df8ed2cb285d2698cab43
+  mask:
+  - - 4
+    - 8

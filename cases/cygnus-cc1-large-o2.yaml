@@ -1,0 +1,32 @@
+---
+id: cygnus-cc1-large-o2
+
+fixture: cygnus-2.7-96Q3
+
+labels:
+  - cygnus
+  - cygnus-2.7-96Q3
+  - cc1
+  - o2
+
+
+command:
+  program: CC1.EXE
+  args:
+    - -O2
+    - -o
+    - foo.s
+    - foo.i
+
+inputs:
+  # Same frozen seed as the -O0 sibling; only the flag varies, so any
+  # -O0/-O2 output difference is pure optimizer behavior.
+  - source: sources/large/large.i
+    dest: foo.i
+
+outputs:
+  - path: foo.s
+
+benchmark:
+  size: large
+  iterations: 2

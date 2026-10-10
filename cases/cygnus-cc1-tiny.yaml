@@ -1,0 +1,31 @@
+---
+id: cygnus-cc1-tiny
+
+fixture: cygnus-2.7-96Q3
+
+labels:
+  - cygnus
+  - cygnus-2.7-96Q3
+  - cc1
+
+command:
+  program: CC1.EXE
+  args:
+    - -o
+    - foo.s
+    - foo.i
+
+inputs:
+  # Preprocessed TU, seeded from the verified cygnus-cpp-tiny output and
+  # frozen: CC1 cases never run CPP, so a CPP change cannot silently move
+  # the CC1/AS inputs. Re-seed deliberately (see ORACLE.md) if CPP's
+  # output format ever legitimately changes.
+  - source: sources/tiny/simple.i
+    dest: foo.i
+
+outputs:
+  - path: foo.s
+
+benchmark:
+  size: tiny
+  iterations: 10

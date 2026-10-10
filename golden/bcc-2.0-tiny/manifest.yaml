@@ -1,0 +1,6 @@
+exit_code: 0
+stdout: stdout
+stderr: stderr
+files:
+- path: out.o
+  sha256: c0bc36e2231299244e7e0e60fdfef9ca52b431938888933efaed7ccda79de889

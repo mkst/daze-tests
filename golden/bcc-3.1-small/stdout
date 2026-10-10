@@ -1,0 +1,7 @@
+Borland C++  Version 3.1 Copyright (c) 1992 Borland International
+sieve.c:
+Warning sieve.c 16: Call to function 'printf' with no prototype in function main
+Warning sieve.c 31: Call to function 'printf' with no prototype in function main
+Warning sieve.c 32: Call to function 'printf' with no prototype in function main
+
+	Available memory 4706816

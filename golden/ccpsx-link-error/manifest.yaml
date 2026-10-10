@@ -1,0 +1,7 @@
+exit_code: 1
+stdout: null
+stderr: null
+files:
+- path: ENTRY.CPE
+  size: 67
+  sha256: 804892abdb8e388b956b3c4ba5ffb19fe21a7b7105a6d367661286685b4f0547

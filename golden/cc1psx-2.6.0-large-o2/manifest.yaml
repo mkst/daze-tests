@@ -1,0 +1,6 @@
+exit_code: 0
+stdout: stdout
+stderr: null
+files:
+- path: BAZ.S
+  sha256: 24236b182e0110a0d166adfcb6ee8f4ee81e63849fa6f7351e102b5d85380756

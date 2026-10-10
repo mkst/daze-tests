@@ -1,0 +1,31 @@
+---
+id: ccpsx-psyq3.3-medium
+
+fixture: ccpsx-psyq3.3
+
+labels:
+  - ccpsx
+  - ccpsx-psyq3.3
+  - compiler
+
+command:
+  program: CCPSX.EXE
+  args:
+    - -c
+    - -o
+    - MEDIUM.OBJ
+    - medium.c
+
+inputs:
+  - source: sources/medium/medium.c
+    dest: medium.c
+
+outputs:
+  - path: MEDIUM.OBJ
+    # The COFF source-file record embeds the DOS drive letter (G: in
+    # DOSEMU2, C: in Daze); the remaining object bytes agree exactly.
+    mask: [[109, 110]]
+
+benchmark:
+  size: medium
+  iterations: 5

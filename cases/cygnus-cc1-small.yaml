@@ -1,0 +1,29 @@
+---
+id: cygnus-cc1-small
+
+fixture: cygnus-2.7-96Q3
+
+labels:
+  - cygnus
+  - cygnus-2.7-96Q3
+  - cc1
+
+command:
+  program: CC1.EXE
+  args:
+    - -o
+    - foo.s
+    - foo.i
+
+inputs:
+  # Seeded from the verified cygnus-cpp-small output, frozen (same
+  # rationale as tiny; see cygnus-cpp-tiny/ORACLE.md).
+  - source: sources/small/sieve.i
+    dest: foo.i
+
+outputs:
+  - path: foo.s
+
+benchmark:
+  size: small
+  iterations: 10

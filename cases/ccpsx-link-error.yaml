@@ -1,0 +1,42 @@
+id: ccpsx-link-error
+fixture: ccpsx-psyq3.3
+labels:
+- migration
+- ccpsx-psyq3.3
+commands:
+- program: CCPSX.EXE
+  args:
+  - -v
+  - -o
+  - ENTRY.CPE
+  - ENTRY.C
+  expect:
+    stdout_contains:
+    - cpppsx.exe
+    - cc1psx.exe
+    - aspsx.exe
+    - psylink.exe
+    files:
+    - &id001
+      path: ENTRY.CPE
+      size: 67
+      sha256: 804892abdb8e388b956b3c4ba5ffb19fe21a7b7105a6d367661286685b4f0547
+- program: CCPSX.EXE
+  args:
+  - -c
+  - BAD.C
+  expect:
+    exit_code: 1
+    stdout_contains:
+    - missing
+    - undeclared
+    files:
+    - path: BAD.OBJ
+      absent: true
+inputs:
+- source: sources/migration/entry.c
+  dest: ENTRY.C
+- source: sources/migration/bad.c
+  dest: BAD.C
+outputs:
+- *id001

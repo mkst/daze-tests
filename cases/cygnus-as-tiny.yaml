@@ -1,0 +1,37 @@
+---
+id: cygnus-as-tiny
+
+fixture: cygnus-2.7-96Q3
+
+labels:
+  - cygnus
+  - cygnus-2.7-96Q3
+  - as
+
+command:
+  program: AS.EXE
+  args:
+    - -o
+    - foo.o
+    - foo.s
+
+inputs:
+  # Assembler output, seeded from the verified cygnus-cc1-tiny output and
+  # frozen (same rationale as the .i seeding; see ORACLE.md).
+  - source: sources/tiny/simple.s
+    dest: foo.s
+
+outputs:
+  # COFF bytes 4-7 are an object-finalize timestamp sampled from the DOS
+  # clock (host wall clock via INT 21h date/time). Fast inputs agree
+  # across backends within a run, but the stamp moves with the calendar,
+  # so an exact hash goes stale overnight (observed: blessed Oct 6,
+  # failing Oct 7 with both backends agreeing on the new bytes). Mask
+  # those bytes like the large/xlarge cases; everything else compares
+  # exactly.
+  - path: foo.o
+    mask: [[4, 8]]
+
+benchmark:
+  size: tiny
+  iterations: 10

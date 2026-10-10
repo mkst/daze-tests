@@ -1,0 +1,6 @@
+exit_code: 0
+stdout: stdout
+stderr: stderr
+files:
+- path: sieve.OBJ
+  sha256: 061b43b61545687b775ff6e905f680e038e10e07355456c9c060f398a55d6897

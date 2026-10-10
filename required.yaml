@@ -1,0 +1,82 @@
+groups:
+  required:
+  - case: aspsx-1.05-tiny
+    backends:
+    - unicorn
+    - kvm
+  - case: aspsx-1.07-tiny
+    backends:
+    - unicorn
+    - kvm
+  - case: aspsx-2.05-tiny
+    backends:
+    - unicorn
+    - kvm
+  - case: aspsx-2.08-tiny
+    backends:
+    - unicorn
+    - kvm
+  - case: aspsx-2.21-tiny
+    backends:
+    - unicorn
+    - kvm
+  - case: aspsx-2.30-tiny
+    backends:
+    - unicorn
+    - kvm
+  - case: aspsx-2.34-tiny
+    backends:
+    - unicorn
+    - kvm
+  - case: bcc-2.0-tiny
+    backends:
+    - unicorn
+    - kvm
+  - case: bcc-3.1-tiny
+    backends:
+    - unicorn
+    - kvm
+  - case: cc1psx-2.6.0-tiny
+    backends:
+    - unicorn
+    - kvm
+  - case: cc1psx-2.6.3-tiny
+    backends:
+    - unicorn
+    - kvm
+  - case: cc1psx-2.7.2-tiny
+    backends:
+    - unicorn
+    - kvm
+  - case: msc-5.1-tiny
+    backends:
+    - unicorn
+    - kvm
+  - case: cc1psx-2.6.0-tiny-o2
+    backends:
+    - unicorn
+    - kvm
+  - case: cygnus-split-pipeline
+    backends:
+    - unicorn
+    - kvm
+  - case: cygnus-archive-workflow
+    backends:
+    - unicorn
+    - kvm
+  - case: ccpsx-psyq3.3-medium
+    backends:
+    - unicorn
+    - kvm
+  - case: ccpsx-link-error
+    backends:
+    - unicorn
+    - kvm
+  - case: asmpsx-link-error
+    backends:
+    - unicorn
+    - kvm
+  - case: aspsx-2.34-tiny
+    backends:
+    - auto
+    - omitted

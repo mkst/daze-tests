@@ -1,0 +1,6 @@
+exit_code: 0
+stdout: stdout
+stderr: null
+files:
+- path: large.o
+  sha256: e1bbd4d3b2b0892f692c32479dd81135bdb37cbfb2e7c67643cbb7a56e189d00

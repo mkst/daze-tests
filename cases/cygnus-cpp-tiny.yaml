@@ -1,0 +1,28 @@
+---
+id: cygnus-cpp-tiny
+
+fixture: cygnus-2.7-96Q3
+
+labels:
+  - cygnus
+  - cygnus-2.7-96Q3
+  - cpp
+
+command:
+  program: CPP.EXE
+  args:
+    - simple.c
+    - foo.i
+
+inputs:
+  # Trivial TU (identical to daze's simple.c pipeline input). Stage
+  # byte-exact, no conversion.
+  - source: sources/tiny/simple.c
+    dest: simple.c
+
+outputs:
+  - path: foo.i
+
+benchmark:
+  size: tiny
+  iterations: 10

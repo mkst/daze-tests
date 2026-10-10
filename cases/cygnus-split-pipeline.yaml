@@ -1,0 +1,61 @@
+id: cygnus-split-pipeline
+fixture: cygnus-2.7-96Q3
+labels:
+- migration
+- cygnus-2.7-96Q3
+commands:
+- program: D:/CPP.EXE
+  args:
+  - C:/dos_src.c
+  - -o
+  - C:/src_proc.c
+  expect:
+    exit_code: 0
+    stdout_equals: ''
+    files:
+    - path: src_proc.c
+      sha256: 967a4fd0ff49866b157cb49dbaa7b0913720334b5221358a0472036a7f465624
+- program: D:/CC1.EXE
+  args:
+  - -quiet
+  - C:/src_proc.c
+  - -o
+  - C:/output.s
+  expect:
+    exit_code: 0
+    stdout_equals: ''
+    files:
+    - path: output.s
+      sha256: efcbeaf31aaab939c97cca5107f42b3e8da6e2f8e9ab86169a19e983e68af82d
+- program: D:/AS.EXE
+  args:
+  - C:/output.s
+  - -o
+  - C:/output.o
+  expect:
+    exit_code: 0
+    stdout_equals: ''
+    files:
+    - &id001
+      path: output.o
+      size: 393
+      sha256: eae8a2acc1d641a8d6edabd79b6e97d12db18fcc5c5df8ed2cb285d2698cab43
+      mask:
+      - - 4
+        - 8
+inputs:
+- source: sources/migration/answer.c
+  dest: dos_src.c
+  crlf: true
+outputs:
+- *id001
+fixture_dest: drives/D
+mounts:
+- drive: C
+  path: .
+- drive: D
+  path: drives/D
+env:
+  PATH: D:\;C:\
+  TEMP: C:\
+  TMP: C:\

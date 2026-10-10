@@ -1,0 +1,30 @@
+---
+id: aspsx-2.08-medium
+
+fixture: aspsx-2.08
+
+labels:
+  - aspsx
+  - aspsx-2.08
+  - assembler
+
+command:
+  program: ASPSX.EXE
+  args:
+    - -o
+    - FOO.O
+    - MIPS.S
+
+inputs:
+  # Real CC1-generated game code (925 lines). Materialize with DOS
+  # line endings.
+  - source: sources/medium/mips.s
+    dest: MIPS.S
+    crlf: true
+
+outputs:
+  - path: FOO.O
+
+benchmark:
+  size: medium
+  iterations: 10

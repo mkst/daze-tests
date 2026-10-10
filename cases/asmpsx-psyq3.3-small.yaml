@@ -1,0 +1,30 @@
+---
+id: asmpsx-psyq3.3-small
+
+fixture: asmpsx-psyq3.3
+
+labels:
+  - asmpsx
+  - asmpsx-psyq3.3
+  - assembler
+
+command:
+  program: ASMPSX.EXE
+  args:
+    - /l
+    - SIMPLE.ASM,SIMPLE.OBJ
+
+inputs:
+  - source: sources/small/psyq-simple.asm
+    dest: SIMPLE.ASM
+    crlf: true
+
+outputs:
+  - path: SIMPLE.OBJ
+    # ASMPSX's object records vary between DOSEMU2 and Daze at these fields;
+    # instructions and the exported symbol are byte-identical.
+    mask: [[7, 9], [19, 21], [37, 41]]
+
+benchmark:
+  size: small
+  iterations: 5

@@ -1,0 +1,35 @@
+---
+id: cc1psx-2.6.3-small-o2
+
+fixture: cc1psx-2.6.3
+
+labels:
+  - cc1psx
+  - cc1psx-2.6.3
+  - compiler
+  - o2
+
+# -O2 exercises AH=43h/AL=01 (set file attributes), which Daze tolerates
+# but reports unconditionally on Unicorn while KVM stays silent — same
+# structural-divergence class as BCC 3.1 (see its ORACLE.md). Implementing
+# 4301h would unify the streams; until then stderr is null. See ORACLE.md.
+ignore_stderr: true
+
+command:
+  program: CC1PSX.EXE
+  args:
+    - -O2
+    - -o
+    - BAZ.S
+    - foo.i
+
+inputs:
+  - source: sources/small/sieve.i
+    dest: foo.i
+
+outputs:
+  - path: BAZ.S
+
+benchmark:
+  size: small
+  iterations: 5

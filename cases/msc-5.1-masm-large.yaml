@@ -1,0 +1,33 @@
+---
+id: msc-5.1-masm-large
+
+fixture: msc-5.1
+
+labels:
+  - msc
+  - msc-5.1
+  - compiler
+  - masm
+  - assembler
+
+commands:
+  - program: MASM.EXE
+    args:
+      - records.asm,,,,
+  - program: LINK.EXE
+    args:
+      - records.obj,,,,
+  - program: RECORDS.EXE
+
+inputs:
+  - source: sources/masm/large/records.asm
+    dest: records.asm
+
+outputs:
+  - path: records.obj
+  - path: records.exe
+
+benchmark:
+  size: large
+  iterations: 3
+  kvikdos: true

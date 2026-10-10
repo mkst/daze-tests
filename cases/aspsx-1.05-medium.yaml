@@ -1,0 +1,30 @@
+---
+id: aspsx-1.05-medium
+
+fixture: aspsx-1.05
+
+labels:
+  - aspsx
+  - aspsx-1.05
+  - assembler
+
+command:
+  program: ASPSX.EXE
+  args:
+    - -o
+    - FOO.O
+    - MIPS.S
+
+inputs:
+  # Real CC1-generated game code (925 lines). Materialize with DOS
+  # line endings: ASPSX 1.05 rejects bare LF.
+  - source: sources/medium/mips.s
+    dest: MIPS.S
+    crlf: true
+
+outputs:
+  - path: FOO.O
+
+benchmark:
+  size: medium
+  iterations: 10

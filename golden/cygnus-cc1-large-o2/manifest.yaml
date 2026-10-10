@@ -1,0 +1,6 @@
+exit_code: 0
+stdout: stdout
+stderr: stderr
+files:
+- path: foo.s
+  sha256: 0f4cd3f917fe3947bcd120518379cbc0534fbbb38772384418d9938bbdb8abc6

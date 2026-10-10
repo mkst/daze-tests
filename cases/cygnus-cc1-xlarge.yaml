@@ -1,0 +1,28 @@
+---
+id: cygnus-cc1-xlarge
+
+fixture: cygnus-2.7-96Q3
+
+labels:
+  - cygnus
+  - cygnus-2.7-96Q3
+  - cc1
+
+command:
+  program: CC1.EXE
+  args:
+    - -o
+    - foo.s
+    - foo.i
+
+inputs:
+  # Seeded from the verified cygnus-cpp-xlarge output, frozen.
+  - source: sources/xlarge/xlarge.i
+    dest: foo.i
+
+outputs:
+  - path: foo.s
+
+benchmark:
+  size: xlarge
+  iterations: 3

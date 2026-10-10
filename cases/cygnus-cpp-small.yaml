@@ -1,0 +1,28 @@
+---
+id: cygnus-cpp-small
+
+fixture: cygnus-2.7-96Q3
+
+labels:
+  - cygnus
+  - cygnus-2.7-96Q3
+  - cpp
+
+command:
+  program: CPP.EXE
+  args:
+    - sieve.c
+    - foo.i
+
+inputs:
+  # K&R sieve (same bytes as daze's sieve.C/sieve.c inputs). Stage
+  # byte-exact, no conversion.
+  - source: sources/small/sieve.c
+    dest: sieve.c
+
+outputs:
+  - path: foo.i
+
+benchmark:
+  size: small
+  iterations: 10

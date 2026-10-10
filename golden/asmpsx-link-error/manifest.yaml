@@ -1,0 +1,7 @@
+exit_code: 3
+stdout: null
+stderr: null
+files:
+- path: LINKED.BIN
+  size: 12
+  sha256: 11c8b2a18827fe276b948c5d9e6b9281fedbd5ff85faa0b771d4d1a0f7909808
