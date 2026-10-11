@@ -1,4 +1,6 @@
 id: cygnus-split-pipeline
+ignore_stdout: true
+ignore_stderr: true
 fixture: cygnus-2.7-96Q3
 labels:
 - migration

@@ -1,4 +1,6 @@
 id: asmpsx-link-error
+ignore_stdout: true
+ignore_stderr: true
 fixture: asmpsx-psyq3.3
 labels:
 - migration

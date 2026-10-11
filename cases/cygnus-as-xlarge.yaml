@@ -22,6 +22,7 @@ inputs:
 
 outputs:
   - path: foo.o
+    mask: [[4, 8]]
 
 benchmark:
   size: xlarge

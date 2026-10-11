@@ -118,6 +118,13 @@ class ProvisioningTests(unittest.TestCase):
 
 
 class RequiredTests(unittest.TestCase):
+    def setUp(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        root = patch.object(runner, "ROOT", Path(tmp.name))
+        root.start()
+        self.addCleanup(root.stop)
+
     def test_known_limit_is_failure(self):
         code, _ = runner.regress_one({"id": "limit", "known_limit": ["unicorn"]}, "unicorn", "unused", required=True, err=io.StringIO())
         self.assertEqual(code, 1)

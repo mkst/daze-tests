@@ -456,6 +456,7 @@ def dos_command(command) -> str:
 
 
 def run_dosemu2(case, work: Path, dosemu2: str):
+    validate_oracle_case(case)
     # This deliberately isolates the DOSEMU2 invocation in one place.
     # Host binary is `dosemu` (package dosemu2); guest command goes
     # through a single `-E` string with `-K <dir>` as the drive root.
@@ -584,6 +585,65 @@ def golden_path(case):
     return GOLDEN_DIR / case["id"]
 
 
+def validate_oracle_case(case):
+    unsupported = [key for key in ("mounts", "env") if case.get(key)]
+    for key in ("copy", "remove", "env", "expect"):
+        if any(step.get(key) for step in case_commands(case)):
+            unsupported.append(f"step {key}")
+    if unsupported:
+        raise RuntimeError(f"oracle does not support case {case['id']}: {', '.join(unsupported)}")
+
+
+def validate_golden_contract(case, manifest):
+    declared = {output["path"]: output for output in case.get("outputs", [])}
+    files = manifest.get("files", [])
+    paths = [entry["path"] for entry in files]
+    missing = declared.keys() - set(paths)
+    if missing:
+        raise RuntimeError(f"golden omits declared outputs: {', '.join(sorted(missing))}")
+    if len(paths) != len(set(paths)):
+        raise RuntimeError("golden contains duplicate output paths")
+    for entry in files:
+        if entry["path"] in declared and entry.get("mask", []) != declared[entry["path"]].get("mask", []):
+            raise RuntimeError(f"golden mask differs from case: {entry['path']}")
+    if manifest.get("stdout") is None and not all(
+        any(key in step.get("expect", {}) for key in ("stdout_equals", "stdout_contains"))
+        for step in case_commands(case)
+    ):
+        raise RuntimeError("A null stdout golden requires explicit stdout assertions on every step")
+
+
+def collect_golden_outputs(case, work):
+    files = []
+    for output in case.get("outputs", []):
+        path = find_output(work, output["path"])
+        if path is None or not path.is_file():
+            raise RuntimeError(f"missing declared output: {output['path']}; blessing nothing")
+        entry = {"path": output["path"], "sha256": masked_sha256(path, output.get("mask"))}
+        if output.get("mask"):
+            entry["mask"] = output["mask"]
+        files.append(entry)
+        print(f"{output['path']}: {entry['sha256']} ({path.stat().st_size} bytes)")
+    return files
+
+
+def write_golden(case, result, files):
+    manifest = {
+        "exit_code": result.returncode,
+        "stdout": None if case.get("ignore_stdout") else "stdout",
+        "stderr": None if case.get("ignore_stderr") else "stderr",
+        "files": files,
+    }
+    validate_golden_contract(case, manifest)
+    golden = golden_path(case)
+    golden.mkdir(parents=True, exist_ok=True)
+    for stream in ("stdout", "stderr"):
+        if manifest[stream] is not None:
+            (golden / stream).write_bytes(getattr(result, stream))
+    (golden / "manifest.yaml").write_text(yaml.safe_dump(manifest, sort_keys=False), encoding="utf-8")
+    print(f"blessed golden result: {golden} (review with git diff)")
+
+
 def compare_bytes(label: str, expected: bytes, actual: bytes, err=None):
     if expected == actual:
         return True
@@ -628,6 +688,11 @@ def verify_result(case, work: Path, result, err=None, diagnostic=False) -> bool:
         return False
 
     manifest = load_yaml(manifest_file)
+    try:
+        validate_golden_contract(case, manifest)
+    except RuntimeError as error:
+        print(f"invalid golden for {case['id']}: {error}", file=err)
+        return False
 
     ok = True
 
@@ -642,8 +707,6 @@ def verify_result(case, work: Path, result, err=None, diagnostic=False) -> bool:
     if manifest.get("stdout") is not None:
         expected_stdout = (golden / manifest["stdout"]).read_bytes()
         ok &= compare_bytes("stdout", expected_stdout, result.stdout, err)
-    elif not all(any(k in step.get("expect", {}) for k in ("stdout_equals", "stdout_contains")) for step in case_commands(case)):
-        raise RuntimeError("A null stdout golden requires explicit stdout assertions on every step")
 
     # A null stderr key skips stderr comparison. DPMI-heavy tools print
     # backend-specific diagnostics there (Unicorn register dumps whose
@@ -772,65 +835,8 @@ def command_bless(args):
         print(f"exit code: {result.returncode}")
         print(f"time:      {elapsed * 1000:.3f} ms")
 
-        file_results = []
-
-        for output in case.get("outputs", []):
-            relative = output["path"]
-            path = find_output(work, relative)
-
-            if path is None:
-                print(f"{relative}: MISSING (left out of manifest)")
-                continue
-
-            digest = masked_sha256(path, output.get("mask"))
-            entry = {
-                "path": relative,
-                "sha256": digest,
-            }
-
-            if output.get("mask"):
-                entry["mask"] = output["mask"]
-
-            file_results.append(entry)
-
-            size = path.stat().st_size
-            print(f"{relative}: {digest} ({size} bytes)")
-
-        golden = golden_path(case)
-        golden.mkdir(parents=True, exist_ok=True)
-
-        (golden / "stdout").write_bytes(result.stdout)
-        print(f"stdout: {len(result.stdout)} bytes")
-
-        if case.get("ignore_stderr"):
-            manifest = {
-                "exit_code": result.returncode,
-                "stdout": "stdout",
-                "stderr": None,
-                "files": file_results,
-            }
-            print("stderr: null (ignore_stderr)")
-        else:
-            (golden / "stderr").write_bytes(result.stderr)
-            print(f"stderr: {len(result.stderr)} bytes")
-
-            manifest = {
-                "exit_code": result.returncode,
-                "stdout": "stdout",
-                "stderr": "stderr",
-                "files": file_results,
-            }
-
-        with (golden / "manifest.yaml").open(
-            "w", encoding="utf-8"
-        ) as f:
-            yaml.safe_dump(
-                manifest,
-                f,
-                sort_keys=False,
-            )
-
-        print(f"blessed golden result: {golden} (review with git diff)")
+        files = collect_golden_outputs(case, work)
+        write_golden(case, result, files)
         return 0
 
     finally:
@@ -839,6 +845,7 @@ def command_bless(args):
 
 def command_oracle(args):
     case = get_case(args.case)
+    validate_oracle_case(case)
 
     tmp, work = stage_case(case)
 
@@ -857,71 +864,11 @@ def command_oracle(args):
         print(f"exit code: {result.returncode}")
         print(f"time:      {elapsed * 1000:.3f} ms")
 
-        file_results = []
-
-        for output in case.get("outputs", []):
-            relative = output["path"]
-            path = find_output(work, relative)
-
-            if path is None:
-                print(f"{relative}: MISSING")
-                continue
-
-            digest = masked_sha256(path, output.get("mask"))
-            entry = {
-                "path": relative,
-                "sha256": digest,
-            }
-
-            if output.get("mask"):
-                entry["mask"] = output["mask"]
-
-            file_results.append(entry)
-
-            print(f"{relative}: {digest}")
-
+        files = collect_golden_outputs(case, work)
         if not args.bless:
-            print()
             print("not updating golden data; use --bless to accept")
             return 0
-
-        golden = golden_path(case)
-        golden.mkdir(parents=True, exist_ok=True)
-
-        (golden / "stdout").write_bytes(result.stdout)
-
-        # Cases that opt out of stderr comparison (see verify_result)
-        # record an explicit null instead of a bogus exact file, so a
-        # future --bless cannot silently re-arm a check that can never
-        # pass deterministically.
-        if case.get("ignore_stderr"):
-            manifest = {
-                "exit_code": result.returncode,
-                "stdout": "stdout",
-                "stderr": None,
-                "files": file_results,
-            }
-        else:
-            (golden / "stderr").write_bytes(result.stderr)
-
-            manifest = {
-                "exit_code": result.returncode,
-                "stdout": "stdout",
-                "stderr": "stderr",
-                "files": file_results,
-            }
-
-        with (golden / "manifest.yaml").open(
-            "w", encoding="utf-8"
-        ) as f:
-            yaml.safe_dump(
-                manifest,
-                f,
-                sort_keys=False,
-            )
-
-        print()
-        print(f"blessed golden result: {golden}")
+        write_golden(case, result, files)
 
         return 0
 
@@ -959,7 +906,50 @@ def known_limit_backends(case) -> tuple:
     return ()
 
 
-def regress_one(case, backend: str, daze: str, out=None, err=None, required=False, evidence_dir=None):
+def new_invocation(evidence_dir):
+    base = Path(evidence_dir or ROOT / "evidence")
+    base.mkdir(parents=True, exist_ok=True)
+    evidence = Path(tempfile.mkdtemp(prefix="run-", dir=base))
+    latest = base / f".latest-{evidence.name}"
+    try:
+        latest.symlink_to(evidence.name, target_is_directory=True)
+        latest.replace(base / "latest")
+    finally:
+        latest.unlink(missing_ok=True)
+    return evidence
+
+
+def write_summary(path, **fields):
+    summary = json.loads(path.read_text()) if path.exists() else {}
+    summary.update(fields)
+    path.write_text(json.dumps(summary, indent=2) + "\n")
+
+
+def regress_one(case, backend: str, daze: str, out=None, err=None, required=False,
+                evidence_dir=None, _invocation=None):
+    evidence = Path(_invocation) if _invocation is not None else new_invocation(evidence_dir)
+    pair = evidence / f"{case['id']}.{backend}"
+    if _invocation is not None and pair.exists():
+        raise RuntimeError(f"pair evidence already exists in this invocation: {pair}")
+    pair.mkdir(parents=True, exist_ok=True)
+    summary = pair / "result.json"
+    write_summary(summary, case=case["id"], backend=backend, state="running")
+    if _invocation is None:
+        (evidence / "selection.json").write_text(json.dumps([[case["id"], backend]]))
+        print(f"evidence: {evidence}", file=err or sys.stderr)
+    try:
+        code, detail = _regress_one(case, backend, daze, out, err, required, evidence)
+    except (RuntimeError, OSError) as error:
+        print(f"FAIL {case['id']} [{backend}]: {error}", file=err or sys.stderr)
+        code, detail = 1, str(error)
+    except Exception as error:
+        write_summary(summary, state="failed", detail=str(error))
+        raise
+    write_summary(summary, state="finished", status=code, detail=detail)
+    return code, detail
+
+
+def _regress_one(case, backend: str, daze: str, out=None, err=None, required=False, evidence_dir=None):
     """Run one case/backend pair, returning (returncode, detail).
 
     Shared core behind `regress` (single pair) and `matrix` (many pairs
@@ -1011,10 +1001,10 @@ def regress_one(case, backend: str, daze: str, out=None, err=None, required=Fals
                     diagnostic_result, _ = run_daze(case, diagnostic_work, daze, backend,
                                                     diagnostic=True, evidence=evidence / "diagnostic")
                     if not verify_result(case, diagnostic_work, diagnostic_result, err, diagnostic=True):
-                        shutil.copytree(diagnostic_work, evidence / "failed-diagnostic", dirs_exist_ok=True)
+                        shutil.copytree(diagnostic_work, evidence / "failed-diagnostic")
                         return 1, "diagnostic result differs"
                 except Exception:
-                    shutil.copytree(diagnostic_work, evidence / "failed-diagnostic", dirs_exist_ok=True)
+                    shutil.copytree(diagnostic_work, evidence / "failed-diagnostic")
                     raise
                 finally:
                     diagnostic_tmp.cleanup()
@@ -1032,13 +1022,19 @@ def regress_one(case, backend: str, daze: str, out=None, err=None, required=Fals
         return 124, "diagnostic timeout"
     finally:
         if not passed:
-            shutil.copytree(work, evidence / "failed-work", dirs_exist_ok=True)
+            shutil.copytree(work, evidence / "failed-work")
         tmp.cleanup()
 
 
 def command_regress(args):
     case = get_case(args.case)
-    code, _ = regress_one(case, args.backend, args.daze, required=args.required, evidence_dir=args.evidence_dir)
+    invocation = os.environ.get("DAZE_TEST_INVOCATION_DIR")
+    if invocation:
+        invocation = Path(invocation).resolve()
+        if not invocation.is_dir():
+            raise RuntimeError(f"acceptance invocation directory does not exist: {invocation}")
+    code, _ = regress_one(case, args.backend, args.daze, required=args.required,
+                          evidence_dir=args.evidence_dir, _invocation=invocation)
     return code
 
 
@@ -1081,6 +1077,18 @@ def corpus_fingerprint():
 
 
 def command_matrix(args):
+    evidence = new_invocation(args.evidence_dir)
+    summary = evidence / "matrix.json"
+    write_summary(summary, state="running", groups=args.group, backends=args.backend)
+    print(f"evidence: {evidence}", file=sys.stderr)
+    try:
+        return run_matrix(args, evidence)
+    except Exception as error:
+        write_summary(summary, state="failed", error=str(error))
+        raise
+
+
+def run_matrix(args, evidence):
     """Run every case/backend pair in parallel, regress-only.
 
     Benchmarks are deliberately excluded: timing under contention is
@@ -1093,9 +1101,8 @@ def command_matrix(args):
     cases = load_cases()
 
     pairs = selected_pairs(args, cases)
-    evidence = Path(args.evidence_dir or ROOT / "evidence")
-    evidence.mkdir(parents=True, exist_ok=True)
     (evidence / "selection.json").write_text(json.dumps(pairs, indent=2))
+    write_summary(evidence / "matrix.json", expected=pairs)
 
     if not pairs:
         print("matrix: no pairs match", file=sys.stderr)
@@ -1115,7 +1122,7 @@ def command_matrix(args):
         err_buffer = io.StringIO()
 
         code, detail = regress_one(case, backend, args.daze, out_buffer, err_buffer,
-                                  required=bool(args.group), evidence_dir=evidence)
+                                  required=bool(args.group), _invocation=evidence)
 
         with lock:
             label = {0: "PASS", 1: "FAIL", 77: "SKIP"}.get(code, "TIMEOUT")
@@ -1138,12 +1145,13 @@ def command_matrix(args):
         for label, code in (("pass", 0), ("fail", 1), ("skip", 77))
     }
     timeouts = sum(1 for c in results if c["status"] not in (0, 1, 77))
-    (evidence / "matrix.json").write_text(json.dumps({
-        "expected": pairs, "results": sorted(results, key=lambda r: (r["case"], r["backend"])),
-        "daze_sha256": sha256_file(Path(args.daze)), "fixtures": load_fixtures(),
-        "daze_version": subprocess.run([args.daze, "--version"], capture_output=True, text=True, check=True).stdout.strip(),
-        "corpus_sha256": corpus_fingerprint(), "groups": args.group, "backends": args.backend,
-    }, indent=2))
+    write_summary(evidence / "matrix.json",
+                  results=sorted(results, key=lambda r: (r["case"], r["backend"])))
+    write_summary(evidence / "matrix.json", state="finished",
+                  daze_sha256=sha256_file(Path(args.daze)), fixtures=load_fixtures(),
+                  daze_version=subprocess.run([args.daze, "--version"], capture_output=True,
+                                              text=True, check=True).stdout.strip(),
+                  corpus_sha256=corpus_fingerprint())
 
     print(
         f"matrix: {counts['pass']} pass, {counts['skip']} skip, "
@@ -1411,6 +1419,17 @@ def command_emit_ctest(args):
         case["fixture"]
         for name, _ in pairs for case in [cases[name]]
     })
+    catalogue = load_fixtures()
+    tests = sorted([f"compat.{name}.{backend}" for name, backend in pairs]
+                   + [f"fixture.{fixture}" for fixture in fixtures])
+    if args.manifest:
+        Path(args.manifest).write_text(json.dumps({
+            "schema_version": 1, "pairs": pairs, "tests": tests,
+            "fixtures": {name: catalogue[name] for name in fixtures},
+            "corpus_sha256": corpus_fingerprint(),
+        }, indent=2) + "\n")
+    evidence_flag = (f'--evidence-dir "{cmake_quote(args.evidence_dir)}"'
+                     if args.evidence_dir else "")
 
     for fixture in fixtures:
         cmake_fixture = fixture_cmake_name(fixture)
@@ -1464,6 +1483,7 @@ add_test(
         --backend "{backend}"
         --daze "$<TARGET_FILE:daze>"
         {required_flag}
+        {evidence_flag}
 )
 
 set_tests_properties(
@@ -1475,6 +1495,15 @@ set_tests_properties(
         TIMEOUT {int(timeout)}
 )
 """.strip())
+
+    if args.hermetic_fixtures:
+        overrides = ["DAZE_FIXTURE_SOURCES", *[
+            "DAZE_FIXTURE_" + name.upper().replace("-", "_") for name in catalogue
+        ]]
+        modifications = ";".join(f"{name}=unset:" for name in overrides)
+        for test in tests:
+            print(f'set_property(TEST "{cmake_quote(test)}" APPEND PROPERTY '
+                  f'ENVIRONMENT_MODIFICATION "{cmake_quote(modifications)}")')
 
     return 0
 
@@ -1571,6 +1600,9 @@ def build_parser():
     p = sub.add_parser("emit-ctest")
     p.add_argument("--backend", choices=("unicorn", "kvm", "auto", "omitted"), action="append")
     p.add_argument("--group", action="append")
+    p.add_argument("--manifest", help="Write the emitted selection and corpus metadata as JSON")
+    p.add_argument("--evidence-dir", help="Base directory for direct CTest regression evidence")
+    p.add_argument("--hermetic-fixtures", action="store_true", help="Unset fixture-source overrides in emitted tests")
     p.set_defaults(func=command_emit_ctest)
 
     return parser

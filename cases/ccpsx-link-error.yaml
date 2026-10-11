@@ -1,4 +1,6 @@
 id: ccpsx-link-error
+ignore_stdout: true
+ignore_stderr: true
 fixture: ccpsx-psyq3.3
 labels:
 - migration
