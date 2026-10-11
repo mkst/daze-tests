@@ -1,6 +1,7 @@
-Golden result blessed from Daze output (Unicorn and KVM agree
-throughout). -O2 variant on the frozen `sieve.i` seed; stderr null per
-the tolerated-43h rationale documented in cc1psx-2.6.0-tiny-o2/ORACLE.md
-(Unicorn prints it, KVM stays silent — verified present on 2.6.3 too).
+Daze vs DOSEMU2 (`CC1PSX.EXE -O2 -o BAZ.S foo.i`, frozen `sieve.i`
+seed):
 
-DOSEMU2 oracle: exit 0, byte-identical (`231f0507…`).
+- exit: 0 both.
+- stderr: null (43h: Unicorn prints tolerated-operation line, KVM
+  silent).
+- BAZ.S: byte-identical three-way: `231f0507…`.

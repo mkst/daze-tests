@@ -1,0 +1,11 @@
+exit_code: 0
+stdout: stdout
+stderr: stderr
+files:
+- path: tiny.OBJ
+  sha256: a6825529781a35c726b3c1982bca5b3ea8aa8929b1794ae308ade576e982c9f3
+  mask:
+  - - 53
+    - 57
+  - - 66
+    - 67

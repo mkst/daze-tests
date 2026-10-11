@@ -1,5 +1,5 @@
-Golden result blessed from Daze output (Unicorn and KVM agree
-throughout). Consumes the frozen `sieve.i` seed shared with
-cygnus-cc1-small.
+Daze vs DOSEMU2 (`CC1PSX.EXE -o BAZ.S foo.i`, frozen `sieve.i` seed):
 
-DOSEMU2 oracle: exit 0, byte-identical (`f994466f…`). Stderr zeros.
+- exit: 0 both.
+- stderr: compared exactly (timings all zeros).
+- BAZ.S: byte-identical three-way: `f994466f…`.

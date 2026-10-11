@@ -1,5 +1,6 @@
-Golden result blessed from Daze output (Unicorn and KVM agree
-throughout). -O2 variant of cygnus-cc1-small (1705 vs 2108 bytes —
-the optimizer earns its keep here).
+Daze vs DOSEMU2 (`CC1.EXE -O2 -o foo.s foo.i`, frozen seed; -O2
+variant of cygnus-cc1-small):
 
-DOSEMU2 oracle: exit 0, byte-identical (`16d3426d…`). Stderr zeros.
+- exit: 0 both.
+- stderr: compared exactly (timings all zeros).
+- foo.s: byte-identical three-way: `16d3426d…`.

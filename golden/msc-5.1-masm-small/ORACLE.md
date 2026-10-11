@@ -1,9 +1,6 @@
-Golden result blessed from Daze/Unicorn. Daze/Unicorn and Daze/KVM agree
-on exit code, stdout, stderr, and both generated-file hashes.
+Daze vs DOSEMU2 (`MASM.EXE records.asm,,,,` +
+`LINK.EXE records.obj,,,,` + `RECORDS.EXE`; all three exit 0 both):
 
-DOSEMU2 runs `MASM.EXE records.asm,,,,`, `LINK.EXE records.obj,,,,`, then
-`RECORDS.EXE` in one work directory; all three steps exit 0. The
-`records.obj` and `records.exe` outputs are byte-identical to Daze
-(`841f39bd…` and `2e9d4036…`). DOS symbol-space counts and DOSEMU2's
-startup banner differ, so stdout is pinned to Daze rather than compared to
-the raw DOSEMU2 transcript.
+- stdout: Daze-pinned (symbol-space counts and dosemu banner differ).
+- records.obj and records.exe: byte-identical three-way:
+  `841f39bd…` / `2e9d4036…`.

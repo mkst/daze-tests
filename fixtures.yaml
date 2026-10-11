@@ -129,3 +129,10 @@ fixtures:
     - ASMPSX.EXE
     - PSYLINK.EXE
     content_sha256: acf3e9a45a87b914e8e34d712f236623df29bb224b0eb3be4c5ca1e7fc005375
+  tasm-3.1:
+    url: https://github.com/mkst/daze-tests/releases/download/init/tasm-3.1.zip
+    sha256: 79eb334eba4a5a0645b80aebf2c4a9029e4bed250904442792957e5ed974f14c
+    format: zip
+    provides:
+    - TASM.EXE
+    content_sha256: 4eb88d81d4236b45da559fe4681ee4b18c452707458c5c7b1c325409560d3819

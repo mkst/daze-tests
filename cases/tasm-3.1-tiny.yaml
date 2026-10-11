@@ -1,0 +1,31 @@
+---
+id: tasm-3.1-tiny
+
+fixture: tasm-3.1
+
+labels:
+  - tasm
+  - tasm-3.1
+  - assembler
+
+command:
+  program: TASM.EXE
+  args:
+    - tiny.asm
+
+inputs:
+  # Trivial MASM-mode TU. Stage byte-exact, no conversion: TASM accepts
+  # LF-only input.
+  - source: sources/tasm/tiny/tiny.asm
+    dest: tiny.asm
+
+outputs:
+  - path: tiny.OBJ
+    # TASM stamps the object with the source file's FAT date/time; daze
+    # reports fixed file times, so these five bytes gate masked. The
+    # remaining 171 bytes agree byte-exact with the DOSEMU2 oracle.
+    mask: [[53, 57], [66, 67]]
+
+benchmark:
+  size: tiny
+  iterations: 5

@@ -52,6 +52,10 @@ groups:
     backends:
     - unicorn
     - kvm
+  - case: tasm-3.1-tiny
+    backends:
+    - unicorn
+    - kvm
   - case: cc1psx-2.6.0-tiny-o2
     backends:
     - unicorn

@@ -1,8 +1,6 @@
-DOSEMU2 oracle (`ASMPSX.EXE /l SIMPLE.ASM,SIMPLE.OBJ`): exit 0,
-53-byte object. Its SHA256 agrees with Daze after masking the three
-documented object-record ranges at offsets 7–8, 19–20, and 37–40;
-instruction bytes and the exported `answer` symbol agree. Both Daze
-backends produce identical objects and pass the same masked golden.
+Daze vs DOSEMU2 (`ASMPSX.EXE /l SIMPLE.ASM,SIMPLE.OBJ`):
 
-The tracked source is staged with DOS CRLF line endings; ASMPSX rejects
-LF-only input.
+- exit: 0 both.
+- SIMPLE.OBJ (53 B): agrees after masking 3 object-record words
+  (offsets 7–8, 19–20, 37–40 — see case `mask`); instruction bytes and
+  the exported `answer` symbol identical. Masked hash: `fe9d0f5e…`.

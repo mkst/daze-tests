@@ -1,7 +1,5 @@
-Golden result blessed from Daze Unicorn output (KVM agrees on exit
-code, stdout, stderr, and object). -O0 variant on the frozen
-`xlarge.i` seed (same file cygnus-cc1-xlarge consumes).
+Daze vs DOSEMU2 (`CC1PSX.EXE -o BAZ.S foo.i`, frozen `xlarge.i` seed):
 
-DOSEMU2 oracle: exit 0, byte-identical (`0c1a98a4…`). Three-way
-agreement. 300-function sustained-execution workload; green with
-margin inside the 60s bound on both backends.
+- exit: 0 both.
+- stderr: compared exactly (timings all zeros).
+- BAZ.S: byte-identical three-way: `0c1a98a4…`.

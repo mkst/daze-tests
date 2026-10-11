@@ -1,5 +1,6 @@
-Golden result blessed from Daze output (Unicorn and KVM agree on exit
-code, stdout, and object — ~58s Unicorn vs 0.3s KVM; stderr null per
-the 43h rationale in tiny-o2). -O2 variant of cc1psx-2.6.0-medium.
+Daze vs DOSEMU2 (`CC1PSX.EXE -O2 -o BAZ.S foo.i`, frozen `.i` seed):
 
-DOSEMU2 oracle: exit 0, byte-identical (`f0f62e61…`).
+- exit: 0 both.
+- stderr: null (43h: Unicorn prints tolerated-operation line, KVM
+  silent).
+- BAZ.S: byte-identical three-way: `f0f62e61…`.

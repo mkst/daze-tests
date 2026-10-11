@@ -1,5 +1,6 @@
-Golden result blessed from Daze output (Unicorn and KVM agree on exit
-code, stdout, and object; stderr null per the 43h rationale). -O2
-variant on the frozen `medium.i` seed.
+Daze vs DOSEMU2 (`CC1PSX.EXE -O2 -o BAZ.S foo.i`, frozen `.i` seed):
 
-DOSEMU2 oracle: exit 0, byte-identical (`ad5458cc…`).
+- exit: 0 both.
+- stderr: null (43h: Unicorn prints tolerated-operation line, KVM
+  silent).
+- BAZ.S: byte-identical three-way: `ad5458cc…`.

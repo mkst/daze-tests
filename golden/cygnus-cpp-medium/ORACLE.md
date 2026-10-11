@@ -1,6 +1,4 @@
-Golden result blessed from Daze output (Unicorn and KVM agree;
-streams empty on both). Input `sources/medium/medium.i` frozen from the
-verified CPP output.
+Daze vs DOSEMU2 (`CPP.EXE medium.c foo.i`):
 
-DOSEMU2 oracle (`CPP.EXE medium.c foo.i`): exit 0, `foo.i`
-byte-identical to Daze (`2ed13b76…`). Three-way agreement.
+- exit: 0 both; streams empty.
+- foo.i: byte-identical three-way: `2ed13b76…`.

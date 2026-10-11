@@ -1,8 +1,7 @@
-Golden result blessed from Daze Unicorn output (KVM agrees on exit
-code, stdout, and object; stderr null per the 43h rationale — Unicorn
-prints the tolerated diagnostic line, KVM stays silent, verified by
-the initial bless-then-KVM-regress cycle on this exact case). -O2
-variant on the frozen `large.i` seed.
+Daze vs DOSEMU2 (`CC1PSX.EXE -O2 -o BAZ.S foo.i`, frozen `large.i`
+seed):
 
-DOSEMU2 oracle: exit 0, byte-identical (`6abe22fc…`). Three-way
-agreement on exit code and object. Well under the 60s bound.
+- exit: 0 both.
+- stderr: null (43h: Unicorn prints tolerated-operation line, KVM
+  silent).
+- BAZ.S: byte-identical three-way: `6abe22fc…`.

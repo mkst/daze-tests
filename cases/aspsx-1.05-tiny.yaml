@@ -24,6 +24,12 @@ inputs:
 
 outputs:
   - path: FOO.O
+    # ASPSX embeds per-section slots holding buffer_seg+0x10+i (see
+    # ORACLE.md): Daze's 0x3000 allocator floor vs FreeDOS's MCB address
+    # shifts these 8 words (Daze 0x3010... vs dosemu 0x10DD.../0x10DB...);
+    # assembled code bytes agree exactly. Mask the words so the golden
+    # survives allocator-floor moves and agrees with the DOSEMU2 oracle.
+    mask: [[7, 9], [20, 22], [32, 34], [44, 46], [57, 59], [69, 71], [80, 82], [98, 100]]
 
 benchmark:
   size: tiny

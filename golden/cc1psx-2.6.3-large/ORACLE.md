@@ -1,6 +1,5 @@
-Golden result blessed from Daze output (Unicorn and KVM agree
-throughout) on the frozen `large.i` seed.
+Daze vs DOSEMU2 (`CC1PSX.EXE -o BAZ.S foo.i`, frozen `.i` seed):
 
-DOSEMU2 oracle: exit 0, byte-identical (`55db223b…`). Stderr zeros.
-No `timeout:` override needed (well under the hard 60s bound on the
-current build).
+- exit: 0 both.
+- stderr: compared exactly (timings all zeros).
+- BAZ.S: byte-identical three-way: `55db223b…`.

@@ -1,5 +1,5 @@
-Golden result blessed from Daze output (Unicorn and KVM agree on exit
-code, stdout, and object; also matches daze's own pinned `3ff9b575…`).
+Daze vs DOSEMU2 (`CC1PSX.EXE -o BAZ.S simple.c`):
 
-DOSEMU2 oracle: exit 0, byte-identical. Three-way agreement.
-Stderr timing zeros — same stability note as the other CC1-family cases.
+- exit: 0 both.
+- stderr: compared exactly (timings all zeros).
+- BAZ.S: byte-identical three-way: `3ff9b575…`.

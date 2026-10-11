@@ -1,6 +1,5 @@
-Golden result blessed from Daze Unicorn output (KVM agrees on exit
-code, stdout, stderr, and object). -O0 variant on the frozen
-`medium.i` seed (same file cygnus-cc1-medium consumes).
+Daze vs DOSEMU2 (`CC1PSX.EXE -o BAZ.S foo.i`, frozen `medium.i` seed):
 
-DOSEMU2 oracle: exit 0, byte-identical (`8d674ca0…`). Three-way
-agreement. Stderr timing zeros, as with the tiny case.
+- exit: 0 both.
+- stderr: compared exactly (timings all zeros).
+- BAZ.S: byte-identical three-way: `8d674ca0…`.

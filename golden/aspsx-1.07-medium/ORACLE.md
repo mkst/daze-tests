@@ -1,17 +1,9 @@
-Golden result blessed from Daze Unicorn output (KVM agrees
-byte-for-byte on stdout, stderr, and object).
+Daze vs DOSEMU2 (dosemu 2.0pre9, `ASPSX.EXE -o FOO.O MIPS.S`):
 
-Object is 4608 bytes, `45ba582c…dd4fcf`.
-
-DOSEMU2 oracle (dosemu 2.0pre9, same `-E` invocation as the tiny
-case) on the same inputs:
-
-- exit code: 0
-- program text equivalent modulo banner/leading-CRLF (Daze reports
-  `in 0.0 seconds`; it serves a fixed zero clock)
-- object: 4608 bytes (same size as Daze),
-  `2f18873843569f9e72e634f42b2ec148b21cfcd59a07d36a06d4bdbd31d797ca`
-
-Same-size/different-hash pattern as the 1.05/1.07 tiny objects —
-likely the same `48h` allocator-dependent section slots (verified
-only for 1.05-tiny). Committed golden is the accepted Daze result.
+- exit: 0 both.
+- stdout: equivalent modulo banner/CRLF and timing field (Daze
+  `in 0.0 seconds`, fixed zero clock).
+- stderr: Daze empty; dosemu host warnings.
+- FOO.O (4608 B): same size, hash differs (dosemu `2f188738…` vs Daze
+  `45ba582c…`) — presumed allocator slots (verified only for
+  1.05-tiny). Golden is the exact Daze hash (no mask).
