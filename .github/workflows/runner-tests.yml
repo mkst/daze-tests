@@ -6,8 +6,7 @@ jobs:
   runner-tests:
     runs-on: ubuntu-latest
     steps:
-      - run: cat /etc/groups
-      - run: ls -al /dev/kvm
+      - run: ls -al /dev/kvm || true
       - run: sudo usermod -Ga kvm $USER
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
