@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: ls -al /dev/kvm || true
-      - run: sudo usermod -Ga kvm $USER
+      - run: sudo usermod -G -a kvm $USER
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
         with:
