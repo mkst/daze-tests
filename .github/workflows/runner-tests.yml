@@ -6,7 +6,8 @@ jobs:
   runner-tests:
     runs-on: ubuntu-latest
     steps:
-      - run: ls -al /dev/kvm && sudo usermod -aG kvm $USER
+      - name: Enable KVM
+        run: sudo chmod 666 /dev/kvm
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
         with:
